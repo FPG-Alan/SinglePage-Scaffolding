@@ -63,7 +63,9 @@ export default class imgLoader {
 		}
 	}
 	function updateLoading(r){
-		progressBar.animateTo(360 * r, 200);
+		if(progressBar){
+			progressBar.animateTo(360 * r, 200);
+		}
 		if(r >= 1){
 			singelDtd.resolve();
 		}

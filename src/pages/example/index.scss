@@ -1,3 +1,18 @@
 .example {
-	background: #333;
+	// background: #333;
+	.test1{
+		width: 100px;
+		height: 100px;
+
+		background-color: #abcdef
+	}
+
+	.btn{
+		width: 30px;
+		height: 20px;
+		background: #fff;
+		color: #000;
+		cursor: pointer;
+		padding: 2px;
+	}
 }
