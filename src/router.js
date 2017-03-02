@@ -9,7 +9,7 @@ import 'pubsub-js';
 export default class router {
 	constructor(env) {
 		this.env = env;
-		this.moduleArr = ['example'];
+		this.moduleArr = ['example','webgl'];
 		this.initIndex = 0;
 	}
 	routerUrl(url){

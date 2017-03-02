@@ -4,6 +4,7 @@ import router from './router';
 import utils from './utils';
 
 import Example from './pages/example';
+import WebGl from './pages/webgl';
 
 import imgLoader from './libs/imgLoader';
 
@@ -41,6 +42,7 @@ function initPages(){
     platform.isTablet&&($('body').addClass('tablet'));
 
     var example = new Example($('section.example'),'Example');
-    pageInstanceArr = [example];
+    var webgl = new WebGl($('section.webgl'),'Webgl');
+    pageInstanceArr = [example, webgl];
     return pageInstanceArr;
 }
