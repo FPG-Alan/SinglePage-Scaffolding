@@ -20,6 +20,7 @@ gulp.task('build_index_html', function () {
 gulp.task('build_page_html', function () {
 	return gulp.src(paths.source + '/pages/**/*.pug')
 		.pipe(foreach(function (stream, file) {
+
 			var datapath = file.path.substr(0, file.path.lastIndexOf(isWin ? "\\" : '/')) + slash + 'data' + slash + 'index.json';
 			delete require.cache[datapath];
 

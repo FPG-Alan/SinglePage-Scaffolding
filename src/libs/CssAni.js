@@ -1,3 +1,5 @@
+import utils from '../utils';
+
 export default class CssAni{
     constructor(_dom, _target, _duration, _delay, _ease, _complete){
         this.dom = _dom;
@@ -10,6 +12,7 @@ export default class CssAni{
         this._init();
     }
     _init(){
+
         let tmpTargetObj = {};
         let tmpTransitionStr = '';
         // attr duration ease delay
@@ -50,7 +53,7 @@ export default class CssAni{
     }
 
     static get prefix() {
-      return platform.isWebkit?'-webkit-':'';
+      return utils.platform.isWebkit?'-webkit-':'';
     }
 
     static get events() {

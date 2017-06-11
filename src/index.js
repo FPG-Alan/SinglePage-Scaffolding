@@ -1,48 +1,82 @@
-import 'pubsub-js';
-
-import router from './router';
 import utils from './utils';
-
-import Example from './pages/example';
-import WebGl from './pages/webgl';
-
+import router from './router';
 import imgLoader from './libs/imgLoader';
 
-var env = PRODUCTION?'prod':'dev';
-var pageInstanceArr, allInstanceArr;
-
-window.routerInstance = new router(env);
-routerInstance.routerUrl(window.location.href);
-
-PubSub.subscribe('html_injection_complete', ()=>{
-    console.log('page assemble done.');
-    allInstanceArr = [].concat(initPages());
-    loadAll();
+// require all pages
+// -----------------------------------------------------------------------------------
+const req = require.context("./pages", true, /^(.*\.(js$))[^.]*$/igm);
+const allPages = [];
+let currentPages = [];
+req.keys().forEach(function (key) {
+    allPages.push(req(key));
 });
-function postInit(){
-    console.log('------all done, ready for use.------');
-}
-function loadAll(){
-    let dtdArr = [];
-    for(let i = 0,l = pageInstanceArr.length;i<l;i++){
-        if(pageInstanceArr[i].init){
-            let singleDtd = $.Deferred();
-            pageInstanceArr[i].init(singleDtd);
-            dtdArr.push(singleDtd);
-        }
-    }
-    let imgDtd = $.Deferred();
-    imgLoader.preloadImgs($('body'), routerInstance.baseUrl, imgDtd, null);
-    dtdArr.push(imgDtd);
-    $.when.apply($, dtdArr).done(postInit.bind(this));
-}
-function initPages(){
-    platform.isMobile&&($('body').addClass('mobile'));
-    (!platform.isAndroid&&!platform.isiPad&&!platform.isiPhone)&&($('body').addClass('no-touch'));
-    platform.isTablet&&($('body').addClass('tablet'));
+// -----------------------------------------------------------------------------------
+let $body, $window;
+let nowWW, nowWH;
+let routerIns;
 
-    var example = new Example($('section.example'),'Example');
-    var webgl = new WebGl($('section.webgl'),'Webgl');
-    pageInstanceArr = [example, webgl];
-    return pageInstanceArr;
+// -----------------------------------------------------------------------------------
+routerIns = new router().resolveURL(window.location.href).then((modules) => {
+    if (modules) {
+        for (let i = 0, l = modules.length; i < l; i++) {
+            for (let j = 0, k = allPages.length; j < k; j++) {
+                if (allPages[j].default.pageName === modules[i]) {
+                    currentPages.push(allPages[j].default);
+                    break;
+                }
+            }
+        }
+        $body = $('body');
+        initDom();
+        initPages().then(() => {
+            loadAll();
+        });
+    }
+
+});
+function initDom() {
+    if (utils.platform.isMobile) {
+        $body.addClass('mobile');
+    }
+    if (!utils.platform.isAndroid && !utils.platform.isiPad && !utils.platform.isiPhone) {
+        $body.addClass('no-touch');
+    }
+    if (utils.platform.isTablet) {
+        $body.addClass('tablet');
+    }
+    if (utils.platform.isDesktop) {
+        $body.addClass('tablet');
+    }
+}
+function loadAll() {
+    new Promise((resolve) => {
+        imgLoader.preloadImgs($body, routerIns.baseURL, resolve, null);
+    }).then(postInit);
+}
+function postInit() {
+    console.log('--------All Done, ready for use.--------');
+
+    $window = $(window);
+    nowWW = $window.width();
+    nowWH = $window.height();
+    $window.on('scroll',()=>{
+        let tmpST = $window.scrollTop();
+        currentPages.map((page)=>{
+            page.onScroll(tmpST+nowWH);
+        });
+    });
+
+    $window.on('resize',()=>{
+        nowWW = $window.width();
+        nowWH = $window.height();
+        currentPages.map((page)=>{
+            page.onResize(nowWW,nowWH);
+        });
+    });
+}
+async function initPages() {
+    for (let i = 0, l = currentPages.length; i < l; i++) {
+        currentPages[i] = new currentPages[i]();
+        await currentPages[i].init();
+    }
 }
