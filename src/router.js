@@ -1,12 +1,14 @@
 import 'whatwg-fetch';
 
-export default class router {
+class router {
 	constructor() {
 		this._baseURL = './';
 		this.currentMoudle = '';
 		this.currentIndex = 0;
 
 		this.rootUrl = PRODUCTION?"/build":"";
+		console.log('22222222222'+this.rootUrl);
+
 		this.rules = [{
 			path: '/',
 			// skip_id: -1,
@@ -126,3 +128,5 @@ export default class router {
 		return this._baseURL;
 	}
 }
+
+export default new router();

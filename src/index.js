@@ -24,7 +24,7 @@ let initPage;
 
 
 // -----------------------------------------------------------------------------------
-routerIns = new router().resolveURL(window.location.href).then((rule) => {
+routerIns = router.resolveURL(window.location.href).then((rule) => {
     if (rule) {
         for (let i = 0, l = rule.modules.length; i < l; i++) {
             for (let j = 0, k = allPages.length; j < k; j++) {

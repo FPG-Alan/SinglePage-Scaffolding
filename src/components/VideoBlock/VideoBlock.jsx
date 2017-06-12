@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 /* eslint-disable no-unused-vars*/
-import style from './style.scss';
+// import style from './style.scss';
 /* eslint-enable no-unused-vars*/
 // import store from '../../store/index';
 
 
-// import phoneVertical from '../../assets/images/phone-vertical.png';
+import phoneVertical from '../../assets/images/phone-vertical.png';
 // import phoneSquare from '../../assets/images/phone-square.png';
 // import phoneNormal from '../../assets/images/phone-normal.png';
 // import phoneHorizontal from '../../assets/images/phone-horizontal.png';
 // import playImg from '../../assets/images/play.png';
 // import playImg2x from '../../assets/images/play@2x.png';
-
 @observer
 export default class VideoBlock extends Component {
     componentWillMount() {
@@ -222,8 +221,10 @@ export default class VideoBlock extends Component {
 
     render() {
         return (
-            <div>
-                <p>come from React~</p>
+            <div className='video-block'>
+                <p>this is react!</p>
+
+                <img className="holder" src={phoneVertical} ref={(ref) => { this.holder = ref; }} />
             </div>
         );
     }

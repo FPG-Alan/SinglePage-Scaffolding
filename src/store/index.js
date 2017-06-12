@@ -1,4 +1,5 @@
 import { observable, action} from 'mobx';
+import router from '../router';
 
 class Store {
     @observable initScrollTop = false;
@@ -17,7 +18,10 @@ class Store {
     }
 
     changeURL = () => {
-        history.pushState({}, '', window.location.origin+'/'+this.currentPage.constructor.pageName+'/');
+        console.log('1111111111111111111111');
+        console.log(router.rootUrl);
+
+        history.pushState({}, '', window.location.origin+router.rootUrl+'/'+this.currentPage.constructor.pageName+'/');
     }
 }
 const StoreInstance = new Store();

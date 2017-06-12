@@ -41,9 +41,13 @@ export default class example2 {
     }
 
     setLocalAttr() {
-        this.topLine = this.$dom.offset().top;
-        this.bottomLine = this.topLine + this.$dom.height();
-        console.log('get example2 local attr');
+        console.log(this.$dom);
+        if(this.$dom.length > 0){
+            this.topLine = this.$dom.offset().top;
+            this.bottomLine = this.topLine + this.$dom.height();
+            console.log('get example2 local attr');
+        }
+        
     }
 }
 example2.pageName = 'example2';
