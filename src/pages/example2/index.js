@@ -1,4 +1,8 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import store from '../../store';
+import App from '../../components/VideoBlock';
 
 export default class example2 {
     constructor() {
@@ -9,7 +13,13 @@ export default class example2 {
             this.setLocalAttr();
             this.inViewport = false;
 
-            this.$dom.find('h1').html('22');
+            this.$dom.find('h1').html('OK');
+
+
+            ReactDOM.render(
+                <App />, 
+                this.$dom.find('.react-component')[0]
+            );
             resolve();
         });
     }
@@ -33,6 +43,7 @@ export default class example2 {
     setLocalAttr() {
         this.topLine = this.$dom.offset().top;
         this.bottomLine = this.topLine + this.$dom.height();
+        console.log('get example2 local attr');
     }
 }
 example2.pageName = 'example2';

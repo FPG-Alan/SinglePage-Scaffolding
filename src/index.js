@@ -10,28 +10,29 @@ import imgLoader from './libs/imgLoader';
 const req = require.context("./pages", true, /^(.*\.(js$))[^.]*$/igm);
 const allPages = [];
 let currentPages = [];
-req.keys().forEach(function (key) {
-    allPages.push(req(key));
-});
+req.keys().forEach((key) => { allPages.push(req(key)); });
 // -----------------------------------------------------------------------------------
 let $body, $window;
 let nowWW, nowWH;
 let routerIns;
 
+let initPage;
+
 // -----------------------------------------------------------------------------------
-if (module.hot) {
-  module.hot.accept();
-}
+!PRODUCTION && (module.hot) && module.hot.accept();
 // -----------------------------------------------------------------------------------
 
 
 // -----------------------------------------------------------------------------------
-routerIns = new router().resolveURL(window.location.href).then((modules) => {
-    if (modules) {
-        for (let i = 0, l = modules.length; i < l; i++) {
+routerIns = new router().resolveURL(window.location.href).then((rule) => {
+    if (rule) {
+        for (let i = 0, l = rule.modules.length; i < l; i++) {
             for (let j = 0, k = allPages.length; j < k; j++) {
-                if (allPages[j].default.pageName === modules[i]) {
-                    currentPages.push(allPages[j].default);
+                if (allPages[j].default.pageName === rule.modules[i]) {
+                    currentPages.push({
+                        page: allPages[j].default,
+                        initPage: (allPages[j].default.pageName === rule.initModule)
+                    });
                     break;
                 }
             }
@@ -64,35 +65,50 @@ function loadAll() {
     }).then(postInit);
 }
 function postInit() {
-    console.log('--------All Done, ready for use.--------');
+    // console.log('--------All Done, ready for use.--------');
 
     $window = $(window);
     nowWW = $window.width();
     nowWH = $window.height();
-    $window.on('scroll',()=>{
-        let tmpST = $window.scrollTop();
-        currentPages.map((page)=>{
-            page.onScroll(tmpST+nowWH);
+    
+    store.changeCurrentPage(initPage);
+
+    $window.on('scroll', () => {
+        let tmpBottomLine = $window.scrollTop()+nowWH;
+        currentPages.map((item) => {
+            item.page.onScroll(tmpBottomLine);
         });
     });
 
-    $window.on('resize',()=>{
+    $window.on('resize', () => {
         nowWW = $window.width();
         nowWH = $window.height();
-        currentPages.map((page)=>{
-            page.onResize(nowWW,nowWH);
+        currentPages.map((item) => {
+            item.page.onResize(nowWW, nowWH);
         });
     });
 
 
-    autorun(()=>{
-        console.log('auto run');
-        console.log(store.currentPage);
+    autorun(() => {
+        if(store.currentPage){
+            if(!store.initScrollTop){
+                setTimeout(()=>{
+                    $window.scrollTop(store.currentPage.topLine);
+                    $body.removeClass('initing');
+                    console.log('--------All Done, ready for use.--------');
+                },800);
+                store.changeInitScrollTop(true);
+            }
+        }
     });
 }
 async function initPages() {
     for (let i = 0, l = currentPages.length; i < l; i++) {
-        currentPages[i] = new currentPages[i]();
-        await currentPages[i].init();
+        currentPages[i].page = new currentPages[i].page();
+
+        if(currentPages[i].initPage){
+            initPage = currentPages[i].page;
+        }
+        await currentPages[i].page.init();
     }
 }

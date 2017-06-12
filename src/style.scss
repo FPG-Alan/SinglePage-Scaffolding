@@ -107,7 +107,7 @@ table {
 html,body{
 	// height: 100%;
 	// overflow:hidden;
-
+	
 }
 
 body{
@@ -118,4 +118,8 @@ body{
 	color: #fff;
 	// overflow: hidden;
 	background: #3c3c3c;
+	&.initing{
+		opacity: 0;
+		visibility: hidden;
+	}
 }

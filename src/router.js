@@ -10,22 +10,27 @@ export default class router {
 		this.rules = [{
 			path: '/',
 			// skip_id: -1,
+			initModule: 'example1',
 			modules: ['example1','example2','example3']
 		},{
 			path: '/example',
 			// skip_id: 0,
+			initModule: 'example1',
 			modules: ['example1','example2','example3']
 		},{
 			path: '/example1',
 			// skip_id: 1,
+			initModule: 'example1',
 			modules: ['example1','example2','example3']
 		},{
 			path: '/example2',
 			// skip_id: 1,
+			initModule: 'example2',
 			modules: ['example1','example2','example3']
 		},{
 			path: '/example3',
 			// skip_id: 1,
+			initModule: 'example3',
 			modules: ['example1','example2','example3']
 		}
 		];
@@ -38,11 +43,11 @@ export default class router {
 		} else {
 			this._baseURL = '../';
 		}
-		let modules;
+		let rule;
 		for (let i = 0, l = this.rules.length; i < l; i++) {
 			if (this.rules[i].path === path) {
-				modules = this.rules[i].modules;
-				let allPromises = this.loadModules(modules, this.rules[i].skip_id);
+				rule = this.rules[i];
+				let allPromises = this.loadModules(rule.modules, rule.skip_id);
 				for (let promise of allPromises) {
 					await promise;
 				}
@@ -50,7 +55,7 @@ export default class router {
 		}
 
 
-		return modules;
+		return rule;
 	}
 	loadModules(_modules, _skip_id) {
 		// let mainStory = document.getElementsByClassName('main-story')[0];

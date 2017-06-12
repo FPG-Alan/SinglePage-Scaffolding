@@ -1,14 +1,19 @@
 import { observable, action} from 'mobx';
 
 class Store {
-
+    @observable initScrollTop = false;
     @observable currentPage = null;
+
 
 
 
     @action changeCurrentPage = (cp) => {
         this.currentPage = cp;
         this.changeURL();
+    }
+
+    @action changeInitScrollTop = (flag) => {
+        this.initScrollTop = flag;
     }
 
     changeURL = () => {

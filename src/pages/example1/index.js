@@ -10,7 +10,7 @@ export default class example1 {
             this.setLocalAttr();
             this.inViewport = false;
 
-            this.$dom.find('h1').html('one');
+            this.$dom.find('h1').html('two');
             resolve();
         });
     }
@@ -34,6 +34,8 @@ export default class example1 {
     setLocalAttr() {
         this.topLine = this.$dom.offset().top;
         this.bottomLine = this.topLine + this.$dom.height();
+
+        console.log('get example1 local attr');
     }
 }
 example1.pageName = 'example1';

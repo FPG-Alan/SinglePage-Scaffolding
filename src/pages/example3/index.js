@@ -32,6 +32,7 @@ export default class example3 {
     setLocalAttr() {
         this.topLine = this.$dom.offset().top;
         this.bottomLine = this.topLine + this.$dom.height();
+        console.log('get example3 local attr');
     }
 }
 example3.pageName = 'example3';
