@@ -1,6 +1,9 @@
+import { autorun } from 'mobx';
+import store from './store';
 import utils from './utils';
 import router from './router';
 import imgLoader from './libs/imgLoader';
+
 
 // require all pages
 // -----------------------------------------------------------------------------------
@@ -14,6 +17,13 @@ req.keys().forEach(function (key) {
 let $body, $window;
 let nowWW, nowWH;
 let routerIns;
+
+// -----------------------------------------------------------------------------------
+if (module.hot) {
+  module.hot.accept();
+}
+// -----------------------------------------------------------------------------------
+
 
 // -----------------------------------------------------------------------------------
 routerIns = new router().resolveURL(window.location.href).then((modules) => {
@@ -72,6 +82,12 @@ function postInit() {
         currentPages.map((page)=>{
             page.onResize(nowWW,nowWH);
         });
+    });
+
+
+    autorun(()=>{
+        console.log('auto run');
+        console.log(store.currentPage);
     });
 }
 async function initPages() {

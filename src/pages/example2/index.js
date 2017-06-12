@@ -6,37 +6,33 @@ export default class example2 {
     init() {
         return new Promise((resolve) => {
             this.$dom = $('.example2');
-            this.offsetTop = this.$dom.offset().top;
-            this.height = this.$dom.height();
+            this.setLocalAttr();
             this.inViewport = false;
 
-            console.log('st2: '+this.offsetTop);
+            this.$dom.find('h1').html('22');
             resolve();
         });
     }
-
-    onScroll(bottomLine) {
-        // console.log(st);
-
-        if(this.offsetTop < bottomLine && this.offsetTop+this.height > bottomLine ){
+    onScroll(nowLine) {
+        if(this.topLine < nowLine && this.bottomLine > nowLine ){
             if(!this.inViewport){
-                console.log('example2 into view');
                 store.changeCurrentPage(this);
                 this.inViewport = true
             }
         }else{
             if(this.inViewport){
-                console.log('example2 out of view');
                 this.inViewport = false;
             }
         }
     }
 
-    onResize(w,h) {
-        console.log(w,h);
-        this.offsetTop = this.$dom.offset().top;
-        this.height = this.$dom.height();
-        console.log('st2: ' + this.offsetTop);
+    onResize() {
+        this.setLocalAttr();
+    }
+
+    setLocalAttr() {
+        this.topLine = this.$dom.offset().top;
+        this.bottomLine = this.topLine + this.$dom.height();
     }
 }
 example2.pageName = 'example2';

@@ -6,11 +6,15 @@ require('babel-polyfill');
 
 
 var config = {
-	entry: ['babel-polyfill', './src/index.js'],
-
+	entry: ['webpack/hot/dev-server',
+			'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&__webpack_public_path=http://localhost:' + 3000,
+			'babel-polyfill', 
+			'./src/index.js'
+	],
 	devtool: 'source-map',
 	output: {
 		path: path.join(__dirname, 'build'),
+		publicPath: '/',
 		filename: 'app.bundle.js'
 	},
 	module: {
@@ -37,7 +41,8 @@ var config = {
 		}),
 		new webpack.DefinePlugin({
 			PRODUCTION: JSON.stringify(false)
-		})
+		}),
+		new webpack.HotModuleReplacementPlugin()
 	],
 	watch: true
 }

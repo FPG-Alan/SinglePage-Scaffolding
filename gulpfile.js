@@ -4,6 +4,7 @@ var watch = require('gulp-watch');
 var webpack = require('webpack');
 var webpackDevConfig = require('./webpack.dev.config');
 var webpackDevMiddleware = require('webpack-dev-middleware');
+var webpackHotMiddleware = require('webpack-hot-middleware');
 
 var del = require('del');
 var path = require('path');
@@ -45,8 +46,10 @@ gulp.task('start_serve', function () {
     middleware: [
       webpackDevMiddleware(bundler, {
         publicPath: webpackDevConfig.output.publicPath,
-        stats: { colors: true }
-      })
+        stats: { colors: true },
+        
+      }),
+      webpackHotMiddleware(bundler)
     ],
     plugins: ['bs-fullscreen-message']
   });
@@ -67,7 +70,7 @@ gulp.task('serve', function (callback) {
         timeout: 100000
       });
     }
-    browserSync.reload();
+    // browserSync.reload();
   });
   runSequence('clean', 'build_style', 'build_index_html', 'build_page_html', 'copy_assets', 'start_serve', callback);
 });

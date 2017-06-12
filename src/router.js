@@ -10,13 +10,21 @@ export default class router {
 		this.rules = [{
 			path: '/',
 			// skip_id: -1,
-			modules: ['example']
+			modules: ['example1','example2','example3']
 		},{
 			path: '/example',
 			// skip_id: 0,
-			modules: ['example2']
+			modules: ['example1','example2','example3']
 		},{
 			path: '/example1',
+			// skip_id: 1,
+			modules: ['example1','example2','example3']
+		},{
+			path: '/example2',
+			// skip_id: 1,
+			modules: ['example1','example2','example3']
+		},{
+			path: '/example3',
 			// skip_id: 1,
 			modules: ['example1','example2','example3']
 		}

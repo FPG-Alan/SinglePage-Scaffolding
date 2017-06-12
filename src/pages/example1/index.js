@@ -2,42 +2,38 @@ import store from '../../store';
 
 export default class example1 {
     constructor() {
+
     }
     init() {
         return new Promise((resolve) => {
             this.$dom = $('.example1');
-            this.offsetTop = this.$dom.offset().top;
-
-            this.height = this.$dom.height();
+            this.setLocalAttr();
             this.inViewport = false;
 
-            console.log('st1: '+this.offsetTop);
+            this.$dom.find('h1').html('one');
             resolve();
         });
     }
-
-
-    onScroll(bottomLine) {
-        // console.log(st);
-
-        if(this.offsetTop < bottomLine && this.offsetTop+this.height > bottomLine ){
-            if(!this.inViewport){
-                this.inViewport = true
+    onScroll(nowLine) {
+        if (this.topLine < nowLine && this.bottomLine > nowLine) {
+            if (!this.inViewport) {
                 store.changeCurrentPage(this);
+                this.inViewport = true
             }
-        }else{
-            if(this.inViewport){
-                console.log('example1 out of view');
+        } else {
+            if (this.inViewport) {
                 this.inViewport = false;
             }
         }
     }
 
-    onResize(w,h) {
-        console.log(w,h);
-        this.offsetTop = this.$dom.offset().top;
-        this.height = this.$dom.height();
-        console.log('st1: ' + this.offsetTop);
+    onResize() {
+        this.setLocalAttr();
+    }
+
+    setLocalAttr() {
+        this.topLine = this.$dom.offset().top;
+        this.bottomLine = this.topLine + this.$dom.height();
     }
 }
 example1.pageName = 'example1';
