@@ -7,7 +7,6 @@ class router {
 		this.currentIndex = 0;
 
 		this.rootUrl = PRODUCTION?"/build":"";
-		console.log('22222222222'+this.rootUrl);
 
 		this.rules = [{
 			path: '/',

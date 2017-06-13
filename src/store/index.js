@@ -18,9 +18,6 @@ class Store {
     }
 
     changeURL = () => {
-        console.log('1111111111111111111111');
-        console.log(router.rootUrl);
-
         history.pushState({}, '', window.location.origin+router.rootUrl+'/'+this.currentPage.constructor.pageName+'/');
     }
 }
