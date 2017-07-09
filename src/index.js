@@ -26,12 +26,12 @@ let initPage;
 // -----------------------------------------------------------------------------------
 routerIns = router.resolveURL(window.location.href).then((rule) => {
     if (rule) {
-        for (let i = 0, l = rule.modules.length; i < l; i++) {
+        for (let i = 0, l = rule.pages.length; i < l; i++) {
             for (let j = 0, k = allPages.length; j < k; j++) {
-                if (allPages[j].default.pageName === rule.modules[i]) {
+                if (allPages[j].default.pageName === rule.pages[i]) {
                     currentPages.push({
                         page: allPages[j].default,
-                        initPage: (allPages[j].default.pageName === rule.initModule)
+                        initPage: (allPages[j].default.pageName === rule.initPage)
                     });
                     break;
                 }

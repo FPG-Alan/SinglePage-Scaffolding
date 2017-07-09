@@ -73,7 +73,6 @@
     "mobx-react": "^4.2.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "video.js": "^5.15.1",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-module-hot-accept": "^1.0.5",
     "whatwg-fetch": "^2.0.3"

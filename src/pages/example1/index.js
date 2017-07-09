@@ -1,5 +1,7 @@
 import store from '../../store';
 
+import cssAni from '../../libs/CssAni';
+
 export default class example1 {
     constructor() {
 
@@ -10,7 +12,20 @@ export default class example1 {
             this.setLocalAttr();
             this.inViewport = false;
 
-            this.$dom.find('h1').html('two');
+            let singleCssAni = new cssAni(
+				$('.test1'),
+				{
+					'opacity': 0.5,
+					'transform': 'translate3d(100px,0px,0px)'
+				},
+				1000, 0, '0.31, 0.19, 0.16, 1', null
+			);
+
+			$('.play-btn').on('click', ()=>{
+                singleCssAni.play();
+            })
+
+
             resolve();
         });
     }

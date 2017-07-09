@@ -65,7 +65,7 @@ var config = {
 	plugins: [
 		new webpack.ProvidePlugin({
 			$: 'jquery',
-			createjs: 'imports?this=>global!exports?createjs!createjs'
+			createjs: 'imports-loader?this=>global!exports-loader?createjs!createjs'
 		}),
 		new webpack.DefinePlugin({
 			PRODUCTION: JSON.stringify(false)

@@ -6,33 +6,28 @@ class router {
 		this.currentMoudle = '';
 		this.currentIndex = 0;
 
-		this.rootUrl = PRODUCTION?"/build":"";
+		this.rootUrl = PRODUCTION ? "/build" : "";
 
 		this.rules = [{
 			path: '/',
-			// skip_id: -1,
-			initModule: 'example1',
-			modules: ['example1','example2','example3']
-		},{
+			initPage: 'example1',
+			pages: ['example1', 'example2', 'example3']
+		}, {
 			path: '/example',
-			// skip_id: 0,
-			initModule: 'example1',
-			modules: ['example1','example2','example3']
-		},{
+			initPage: 'example1',
+			pages: ['example1', 'example2', 'example3']
+		}, {
 			path: '/example1',
-			// skip_id: 1,
-			initModule: 'example1',
-			modules: ['example1','example2','example3']
-		},{
+			initPage: 'example1',
+			pages: ['example1', 'example2', 'example3']
+		}, {
 			path: '/example2',
-			// skip_id: 1,
-			initModule: 'example2',
-			modules: ['example1','example2','example3']
-		},{
+			initPage: 'example2',
+			pages: ['example1', 'example2', 'example3']
+		}, {
 			path: '/example3',
-			// skip_id: 1,
-			initModule: 'example3',
-			modules: ['example1','example2','example3']
+			initPage: 'example3',
+			pages: ['example1', 'example2', 'example3']
 		}
 		];
 	}
@@ -48,7 +43,7 @@ class router {
 		for (let i = 0, l = this.rules.length; i < l; i++) {
 			if (this.rules[i].path === path) {
 				rule = this.rules[i];
-				let allPromises = this.loadModules(rule.modules, rule.skip_id);
+				let allPromises = this.loadPages(rule.pages, rule.skip_id);
 				for (let promise of allPromises) {
 					await promise;
 				}
@@ -58,7 +53,7 @@ class router {
 
 		return rule;
 	}
-	loadModules(_modules, _skip_id) {
+	loadPages(_pages, _skip_id) {
 		// let mainStory = document.getElementsByClassName('main-story')[0];
 
 		let allPromises = [];
@@ -67,11 +62,11 @@ class router {
 		// let postHtml = '';
 
 		let local = this;
-		_modules.map((item, index) => {
+		_pages.map((item, index) => {
 			if (index != _skip_id) {
 				let tmpPromise = new Promise((resolve, reject) => {
 					try {
-						console.log('begin load module -- '+item);
+						console.log('begin load page -- ' + item);
 						fetch(`${local._baseURL}${item}/index.html`).then((response) => {
 							if (response.ok) {
 								return response.text();
@@ -89,14 +84,14 @@ class router {
 								// }
 
 								currentHtml = currentHtml + html;
-								// if (_skip_id === -1 && index == _modules.length - 1 
-								// 	|| _skip_id!==_modules.length - 1 && index === _modules.length - 1
-								// 	|| _skip_id === _modules.length - 1 && index === _modules.length - 2) {
+								// if (_skip_id === -1 && index == _pages.length - 1 
+								// 	|| _skip_id!==_pages.length - 1 && index === _pages.length - 1
+								// 	|| _skip_id === _pages.length - 1 && index === _pages.length - 2) {
 								// 	currentHtml = preHtml+currentHtml+postHtml;
 								// 	document.getElementsByClassName('main-story')[0].innerHTML = currentHtml;
 								// }
 
-								if(index === _modules.length - 1){
+								if (index === _pages.length - 1) {
 									document.getElementsByClassName('main-story')[0].innerHTML = currentHtml;
 								}
 								resolve();
@@ -123,7 +118,7 @@ class router {
 		return `/${parser.pathname.substr(this.rootUrl.length).replace(/[\/]/g, '')}`;
 	}
 
-	get baseURL(){
+	get baseURL() {
 		return this._baseURL;
 	}
 }
